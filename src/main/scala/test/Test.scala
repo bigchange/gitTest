@@ -100,7 +100,7 @@ object Test {
     def  getAllOcr( file:String):String ={
       val img = removeBackgroud(file)
       val listImg = splitImage(img)
-      val map = loadTrainData()
+      val map = loadTrainData
       var result = ""
       for (index <- 0 until listImg.size){
         val bi = listImg.get(index)
