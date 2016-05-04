@@ -38,6 +38,8 @@ object Test {
       val img = ImageIO.read(new File(picFile))
       val width = img.getWidth()
       val height = img.getHeight()
+      println("org width :"+width)
+      println("org height :"+height)
       for (x <- 0 until width) {
         for (y <- 0 until height) {
           if (isNotWhite(img.getRGB(x, y)) == 1) {
@@ -52,10 +54,10 @@ object Test {
 
     def  splitImage( img:BufferedImage): List[BufferedImage] = {
       val subImgs = new ArrayList[BufferedImage]()
-      subImgs.add(img.getSubimage(10, 6, 8, 10))
-      subImgs.add(img.getSubimage(19, 6, 8, 10))
-      subImgs.add(img.getSubimage(28, 6, 8, 10))
-      subImgs.add(img.getSubimage(37, 6, 8, 10))
+      subImgs.add(img.getSubimage(0, 0, 23, 27))
+      subImgs.add(img.getSubimage(23, 0, 23, 27))
+      subImgs.add(img.getSubimage(46, 0, 23, 27))
+      subImgs.add(img.getSubimage(69, 0, 23, 27))
       return subImgs
     }
 
@@ -65,7 +67,7 @@ object Test {
       val files = dir.listFiles()
       for (index <- 0 until files.size) {
         val file = files(index)
-        println(file.getName.charAt(0) + "")
+        // println(file.getName.charAt(0) + "")
         map.put(ImageIO.read(file), file.getName.charAt(0) + "")
       }
       return map
@@ -147,7 +149,7 @@ object Test {
       * @throws Exception
       */
     def main(args:Array[String]):Unit ={
-        val text = getAllOcr("H:\\SmartData-X\\算法\\验证码\\train\\7.jpg")
+        val text = getAllOcr("H:\\SmartData-X\\算法\\验证码\\train\\0.jpg")
         System.out.println(".jpg = " + text)
     }
 }
