@@ -18,15 +18,15 @@ import scala.util.control.Breaks
 object Test {
     def isWhite(colorInt:Int):Int ={
       val color = new Color(colorInt)
-      if (color.getRed() + color.getGreen() + color.getBlue() > 100) {
+      if (color.getRed + color.getGreen + color.getBlue > 100) {
         return 1
       }
       return 0
     }
 
-    def isBlack(colorInt:Int) :Unit = {
+    def isBlack(colorInt:Int) :Int = {
       val color = new Color(colorInt)
-      if (color.getRed() + color.getGreen() + color.getBlue() <= 100) {
+      if (color.getRed() + color.getGreen + color.getBlue() <= 100) {
         return 1
       }
       return 0
@@ -39,16 +39,16 @@ object Test {
       for (x <- 0 until width) {
         for (y <- 0 until height) {
           if (isWhite(img.getRGB(x, y)) == 1) {
-            img.setRGB(x, y, Color.WHITE.getRGB())
+            img.setRGB(x, y, Color.WHITE.getRGB)
           } else {
-            img.setRGB(x, y, Color.BLACK.getRGB())
+            img.setRGB(x, y, Color.BLACK.getRGB)
           }
         }
       }
       return img
     }
 
-    def  splitImage( img:BufferedImage):List[BufferedImage] = {
+    def  splitImage( img:BufferedImage): List[BufferedImage] = {
       val subImgs = new ArrayList[BufferedImage]()
       subImgs.add(img.getSubimage(10, 6, 8, 10))
       subImgs.add(img.getSubimage(19, 6, 8, 10))
@@ -57,18 +57,18 @@ object Test {
       return subImgs
     }
 
-    def  loadTrainData() :Map[BufferedImage, String] = {
+    def  loadTrainData:Map[BufferedImage, String] = {
       val map = new HashMap[BufferedImage, String]()
       val dir = new File("H:\\SmartData-X\\算法\\验证码")
       val files = dir.listFiles()
       for (index <- 0 until files.size) {
         val file = files(index)
-        map.put(ImageIO.read(file), file.getName().charAt(0) + "")
+        map.put(ImageIO.read(file), file.getName.charAt(0) + "")
       }
       return map
     }
 
-    def  getSingleCharOcr(img:BufferedImage, map:Map[BufferedImage, String]):String = {
+    def  getSingleCharOcr(img:BufferedImage, map: Map[BufferedImage, String]):String = {
       var result = ""
       val width = img.getWidth()
       val height = img.getHeight()
@@ -120,11 +120,11 @@ object Test {
           val statusCode = httpClient.executeMethod(getMethod)
           if (statusCode != HttpStatus.SC_OK) {
             System.err.println("Method failed: "
-              + getMethod.getStatusLine())
+              + getMethod.getStatusLine)
           }
           // 读取内容
           val picName = "img//" + i + ".jpg"
-          val inputStream = getMethod.getResponseBodyAsStream()
+          val inputStream = getMethod.getResponseBodyAsStream
           val outStream = new FileOutputStream(picName)
           IOUtils.copy(inputStream, outStream)
           outStream.close()
