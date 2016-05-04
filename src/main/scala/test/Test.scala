@@ -1,5 +1,7 @@
 package test
 
+import java.io.File
+
 import scala.util.control.Breaks
 
 /**
@@ -16,7 +18,7 @@ import scala.util.control.Breaks
   import org.apache.commons.io.IOUtils
 //
 object Test {
-    def isWhite(colorInt:Int):Int ={
+    def isNotWhite(colorInt:Int):Int ={
       val color = new Color(colorInt)
       if (color.getRed + color.getGreen + color.getBlue > 100) {
         return 1
@@ -38,7 +40,7 @@ object Test {
       val height = img.getHeight()
       for (x <- 0 until width) {
         for (y <- 0 until height) {
-          if (isWhite(img.getRGB(x, y)) == 1) {
+          if (isNotWhite(img.getRGB(x, y)) == 1) {
             img.setRGB(x, y, Color.WHITE.getRGB)
           } else {
             img.setRGB(x, y, Color.BLACK.getRGB)
@@ -59,16 +61,17 @@ object Test {
 
     def  loadTrainData:Map[BufferedImage, String] = {
       val map = new HashMap[BufferedImage, String]()
-      val dir = new File("H:\\SmartData-X\\算法\\验证码")
+      val dir = new File("H:\\SmartData-X\\算法\\验证码\\train")
       val files = dir.listFiles()
       for (index <- 0 until files.size) {
         val file = files(index)
+        println(file.getName.charAt(0) + "")
         map.put(ImageIO.read(file), file.getName.charAt(0) + "")
       }
       return map
     }
 
-    def  getSingleCharOcr(img:BufferedImage, map: Map[BufferedImage, String]):String = {
+    def  getSingleCharOcr(img:BufferedImage, map:Map[BufferedImage, String]):String = {
       var result = ""
       val width = img.getWidth()
       val height = img.getHeight()
@@ -81,7 +84,7 @@ object Test {
         loop.breakable{
           for (x <- 0 until width) {
             for (y <- 0 until height){
-              if (isWhite(img.getRGB(x, y)) != isWhite(bi.getRGB(x, y))) {
+              if (isNotWhite(img.getRGB(x, y)) != isNotWhite(bi.getRGB(x, y))) {
                 count = count + 1
                 if (count >= min)
                  loop.break()
@@ -99,13 +102,14 @@ object Test {
 
     def  getAllOcr( file:String):String ={
       val img = removeBackgroud(file)
-      val listImg = splitImage(img)
+      // val listImg = splitImage(img)
       val map = loadTrainData
       var result = ""
-      for (index <- 0 until listImg.size){
+     /* for (index <- 0 until listImg.size){
         val bi = listImg.get(index)
         result += getSingleCharOcr(bi, map)
-      }
+      }*/
+      result = getSingleCharOcr(ImageIO.read(new File("H:\\SmartData-X\\算法\\验证码\\train\\7.jpg")),map)
       ImageIO.write(img, "JPG", new File("H:\\SmartData-X\\算法\\验证码\\"+result+".jpg"))
       return result
     }
@@ -143,7 +147,7 @@ object Test {
       * @throws Exception
       */
     def main(args:Array[String]):Unit ={
-        val text = getAllOcr("H:\\SmartData-X\\算法\\验证码\\7873.jpg")
+        val text = getAllOcr("H:\\SmartData-X\\算法\\验证码\\train\\7.jpg")
         System.out.println(".jpg = " + text)
     }
 }
